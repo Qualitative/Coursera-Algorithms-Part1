@@ -1,0 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+task 'createSrcDirs' << {
+    println "Creating all source sets"
+    project.sourceSets.each { sset ->
+        def sDirSet = sset.allSource
+        // srcDirs is a set of File objects
+        sDirSet.srcDirs.each { dir ->
+            if (!dir.mkdirs()) {
+                println "** Failed to create: ${dir}"
+            }
+        }
+    }
+}
