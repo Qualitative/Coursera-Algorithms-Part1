@@ -1,4 +1,4 @@
-package com.ralko.qu;
+package com.ralko.week1.qu;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -7,16 +7,17 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ralko.qf.QuickFind;
+import com.ralko.week1.qf.QuickFind;
+import com.ralko.week1.qu.QuickUnion;
 
+public class QuickUnionTest {
 
-public class WeightedQuickUnionTest {
     private static final int INITIAL_CAPACITY = 10;
-    private WeightedQuickUnion qu;
+    private QuickUnion qu;
 
     @Before
     public void init() {
-        qu = new WeightedQuickUnion(INITIAL_CAPACITY);
+        qu = new QuickUnion(INITIAL_CAPACITY);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -30,15 +31,13 @@ public class WeightedQuickUnionTest {
     }
 
     @Test
-    public void shouldCheckSizeOfTreeWhenUnionPair() {
+    public void shouldChangeParentOfSecondArgumentWhenUnionPair() {
         qu.union(0, 1);
         assertEquals("[0 0 2 3 4 5 6 7 8 9]", qu.getState());
         qu.union(9, 8);
         assertEquals("[0 0 2 3 4 5 6 7 9 9]", qu.getState());
         qu.union(8, 1);
         assertEquals("[9 0 2 3 4 5 6 7 9 9]", qu.getState());
-        qu.union(4, 1);
-        assertEquals("[9 0 2 3 9 5 6 7 9 9]", qu.getState());
     }
 
     @Test

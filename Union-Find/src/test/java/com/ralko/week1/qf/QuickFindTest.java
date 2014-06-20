@@ -1,9 +1,11 @@
-package com.ralko.qf;
+package com.ralko.week1.qf;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.ralko.week1.qf.QuickFind;
 
 public class QuickFindTest {
     
