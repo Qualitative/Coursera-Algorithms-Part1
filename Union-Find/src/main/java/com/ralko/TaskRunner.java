@@ -1,9 +1,15 @@
 package com.ralko;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ralko.qf.QuickFind;
 import com.ralko.qu.WeightedQuickUnion;
 
 public class TaskRunner {
+    
+    private static final Logger log = LoggerFactory.getLogger(TaskRunner.class);
+    
     public static void main(String[] args) {
         
         QuickFind qf = new QuickFind(10);
@@ -17,11 +23,8 @@ public class TaskRunner {
             wqu.union(p, q);
         }
         
-        
-        // FIXME: use logger
-        System.out.println("Quick Find:");
-        System.out.println(qf.getState());
-        System.out.println("Weighted Quick Union:");
-        System.out.println(wqu.getState());
+        log.info("Quick Find result: {}", qf.getState());
+        log.info("Weighted Quick Union result: {}", wqu.getState());
     }
+    
 }
