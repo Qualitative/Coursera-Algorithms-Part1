@@ -1,7 +1,6 @@
 package com.ralko.week1.qf;
 
 import static com.google.common.base.Preconditions.checkArgument;
-
 import java.util.Arrays;
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,7 +23,7 @@ public class QuickFind {
 
         if (pid == qid) return;
 
-        for(int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.length; i++) {
             if (items[i] == pid) items[i] = qid;
         }
 

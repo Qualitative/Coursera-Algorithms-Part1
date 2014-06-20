@@ -30,7 +30,7 @@ public class WeightedQuickUnion {
         int proot = root(p);
         int qroot = root(q);
         
-        if(sz[qroot] > sz [proot]) {
+        if (sz[qroot] > sz [proot]) {
             items[proot] = qroot;
             sz[qroot] = sz[qroot] + sz[proot];
         } else {
@@ -51,7 +51,7 @@ public class WeightedQuickUnion {
     }
 
     private int root(int i) {
-        while(i != items[i]) i = items[i];
+        while (i != items[i]) i = items[i];
         return i;
     }
 

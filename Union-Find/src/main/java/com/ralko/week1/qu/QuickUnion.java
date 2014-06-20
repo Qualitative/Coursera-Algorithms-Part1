@@ -1,7 +1,6 @@
 package com.ralko.week1.qu;
 
 import static com.google.common.base.Preconditions.checkArgument;
-
 import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +36,7 @@ public class QuickUnion {
     }
 
     private int root(int i) {
-        while(i != items[i]) i = items[i];
+        while (i != items[i]) i = items[i];
         return i;
     }
 

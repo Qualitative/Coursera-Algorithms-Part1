@@ -8,14 +8,14 @@ import com.ralko.week1.qu.WeightedQuickUnion;
 
 public class TaskRunner {
     
-    private static final Logger log = LoggerFactory.getLogger(TaskRunner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TaskRunner.class);
     
     public static void main(String[] args) {
         
         QuickFind qf = new QuickFind(10);
         WeightedQuickUnion wqu = new WeightedQuickUnion(10);
         
-        for(int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             String[] pair = args[i].split("-");
             int p = Integer.parseInt(pair[0]);
             int q = Integer.parseInt(pair[1]);
@@ -23,8 +23,8 @@ public class TaskRunner {
             wqu.union(p, q);
         }
         
-        log.info("Quick Find result: {}", qf.getState());
-        log.info("Weighted Quick Union result: {}", wqu.getState());
+        LOG.info("Quick Find result: {}", qf.getState());
+        LOG.info("Weighted Quick Union result: {}", wqu.getState());
     }
     
 }

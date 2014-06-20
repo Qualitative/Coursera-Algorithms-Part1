@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ralko.week1.qf.QuickFind;
-import com.ralko.week1.qu.QuickUnion;
 
 public class QuickUnionTest {
 
