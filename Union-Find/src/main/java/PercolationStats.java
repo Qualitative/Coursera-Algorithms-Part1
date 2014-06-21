@@ -1,32 +1,57 @@
-
 public class PercolationStats {
 
-   public PercolationStats(int N, int T) {   // perform T independent computational experiments on an N-by-N grid
-       // TODO: provide implementation
-   }
+    private final int T;
+    private double fractions[];
 
-   public double mean() {                    // sample mean of percolation threshold
-       // TODO: provide implementation
-       return Double.NaN;
-   }
+    public PercolationStats(int N, int T) {
 
-   public double stddev() {                  // sample standard deviation of percolation threshold
-       // TODO: provide implementation
-       return Double.NaN;
-   }
+        if (N <= 0 || T <= 0)
+            throw new IllegalArgumentException("N and T values must be positive");
 
-   public double confidenceLo() {            // returns lower bound of the 95% confidence interval
-       // TODO: provide implementation
-       return Double.NaN;
-   }
+        this.T = T;
+        this.fractions = new double[T];
 
-   public double confidenceHi() {            // returns upper bound of the 95% confidence interval
-       // TODO: provide implementation
-       return Double.NaN;
-   }
+        for (int i = 0; i < T; i++) {
 
-   public static void main(String[] args) {  // test client, described below
+            Percolation perc = new Percolation(N);
+            int sitesCount = 0;
 
-   }
+            while (!perc.percolates()) {
+                int row = StdRandom.uniform(1, N + 1);
+                int col = StdRandom.uniform(1, N + 1);
+                if (perc.isOpen(row, col))
+                    continue;
+                perc.open(row, col);
+                sitesCount++;
+            }
 
+            fractions[i] = (double) sitesCount / (N * N);
+        }
+
+    }
+
+    public double mean() {
+        return StdStats.mean(fractions);
+    }
+
+    public double stddev() {
+        if (T == 1)
+            return Double.NaN;
+        return StdStats.stddev(fractions);
+    }
+
+    public double confidenceLo() {
+        return mean() - 1.96 * stddev() / Math.sqrt(T);
+    }
+
+    public double confidenceHi() {
+        return mean() + 1.96 * stddev() / Math.sqrt(T);
+    }
+
+    public static void main(String[] args) {
+        PercolationStats percolationStats = new PercolationStats(200, 100);
+        System.out.println(percolationStats.mean());
+        System.out.println(percolationStats.stddev());
+        System.out.println(percolationStats.confidenceLo() + ", " + percolationStats.confidenceHi());
+    }
 }
