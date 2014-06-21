@@ -8,6 +8,10 @@ public class Percolation {
     private final WeightedQuickUnionUF uf;
 
     public Percolation(int N) {
+
+        if (N <= 0)
+            throw new IllegalArgumentException("N value must be positive");
+
         this.N = N;
         this.size = (N * N) + 2;
 
@@ -56,6 +60,8 @@ public class Percolation {
     }
 
     public boolean percolates() {
+        if (N == 1)
+            return isOpen(1, 1);
         return uf.connected(virtualTop, virtualBottom);
     }
 

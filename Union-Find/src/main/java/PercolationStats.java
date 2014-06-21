@@ -1,7 +1,7 @@
 public class PercolationStats {
 
     private final int T;
-    private double fractions[];
+    private double [] fractions;
 
     public PercolationStats(int N, int T) {
 
