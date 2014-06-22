@@ -5,7 +5,8 @@ public class Percolation {
     private final int virtualTop;
     private final int virtualBottom;;
     private final boolean[][] opened;
-    private final WeightedQuickUnionUF uf;
+    private final WeightedQuickUnionUF ufTop;
+    private final WeightedQuickUnionUF ufBottom;
 
     public Percolation(int N) {
 
@@ -18,13 +19,10 @@ public class Percolation {
         this.virtualTop = 0;
         this.virtualBottom = size - 1;
 
-        this.uf = new WeightedQuickUnionUF(size);
+        this.ufTop = new WeightedQuickUnionUF(size);
+        this.ufBottom = new WeightedQuickUnionUF(size);
+
         this.opened = new boolean[N + 1][N + 1];
-
-        for (int j = 1; j <= N; j++) {
-            uf.union(xyTo1D(1, j), virtualTop);
-        }
-
     }
 
     public void open(int i, int j) {
@@ -32,16 +30,28 @@ public class Percolation {
         checkIndex(j);
         if (!opened[i][j]) {
             opened[i][j] = true;
-            if ((i - 1 > 0) && opened[i - 1][j])
-                uf.union(xyTo1D(i, j), xyTo1D(i - 1, j));
-            if ((i + 1 <= N) && opened[i + 1][j])
-                uf.union(xyTo1D(i, j), xyTo1D(i + 1, j));
-            if ((j - 1 > 0) && opened[i][j - 1])
-                uf.union(xyTo1D(i, j), xyTo1D(i, j - 1));
-            if ((j + 1 <= N) && opened[i][j + 1])
-                uf.union(xyTo1D(i, j), xyTo1D(i, j + 1));
-            if (i == N && isFull(i, j))
-                uf.union(xyTo1D(N, j), virtualBottom);
+            if ((i - 1 > 0) && opened[i - 1][j]) {
+                ufTop.union(xyTo1D(i, j), xyTo1D(i - 1, j));
+                ufBottom.union(xyTo1D(i, j), xyTo1D(i - 1, j));
+            }
+            if ((i + 1 <= N) && opened[i + 1][j]) {
+                ufTop.union(xyTo1D(i, j), xyTo1D(i + 1, j));
+                ufBottom.union(xyTo1D(i, j), xyTo1D(i + 1, j));
+            }
+            if ((j - 1 > 0) && opened[i][j - 1]) {
+                ufTop.union(xyTo1D(i, j), xyTo1D(i, j - 1));
+                ufBottom.union(xyTo1D(i, j), xyTo1D(i, j - 1));
+            }
+            if ((j + 1 <= N) && opened[i][j + 1]) {
+                ufTop.union(xyTo1D(i, j), xyTo1D(i, j + 1));
+                ufBottom.union(xyTo1D(i, j), xyTo1D(i, j + 1));
+            }
+            if (i == 1) {
+                ufTop.union(xyTo1D(i, j), virtualTop);
+                ufBottom.union(xyTo1D(i, j), virtualTop);
+            }
+            if (i == N)
+                ufBottom.union(xyTo1D(i, j), virtualBottom);
         }
     }
 
@@ -55,15 +65,13 @@ public class Percolation {
         checkIndex(i);
         checkIndex(j);
         if (opened[i][j]) {
-            return uf.connected(xyTo1D(i, j), virtualTop);
+            return ufTop.connected(xyTo1D(i, j), virtualTop);
         }
         return false;
     }
 
     public boolean percolates() {
-        if (N == 1)
-            return isOpen(1, 1);
-        return uf.connected(virtualTop, virtualBottom);
+        return ufBottom.connected(virtualTop, virtualBottom);
     }
 
     private int xyTo1D(int i, int j) {
