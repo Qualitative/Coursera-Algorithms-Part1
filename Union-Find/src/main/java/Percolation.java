@@ -23,7 +23,6 @@ public class Percolation {
 
         for (int j = 1; j <= N; j++) {
             uf.union(xyTo1D(1, j), virtualTop);
-            uf.union(xyTo1D(N, j), virtualBottom);
         }
 
     }
@@ -41,6 +40,8 @@ public class Percolation {
                 uf.union(xyTo1D(i, j), xyTo1D(i, j - 1));
             if ((j + 1 <= N) && opened[i][j + 1])
                 uf.union(xyTo1D(i, j), xyTo1D(i, j + 1));
+            if (i == N && isFull(i, j))
+                uf.union(xyTo1D(N, j), virtualBottom);
         }
     }
 
