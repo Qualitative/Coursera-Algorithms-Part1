@@ -1,4 +1,4 @@
-package com.ralko.week1.qu;
+package com.ralko.qu;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -7,7 +7,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ralko.week1.qf.QuickFind;
+import com.ralko.qf.QuickFind;
+import com.ralko.qu.QuickUnion;
 
 public class QuickUnionTest {
 

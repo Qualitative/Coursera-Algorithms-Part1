@@ -1,4 +1,4 @@
-package com.ralko.week1.qf;
+package com.ralko.qf;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import java.util.Arrays;

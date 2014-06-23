@@ -1,10 +1,10 @@
-package com.ralko.week1;
+package com.ralko;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ralko.week1.qf.QuickFind;
-import com.ralko.week1.qu.WeightedQuickUnion;
+import com.ralko.qf.QuickFind;
+import com.ralko.qu.WeightedQuickUnion;
 
 public class TaskRunner {
     
