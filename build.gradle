@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+repositories { mavenCentral() }
+
+dependencies {
+    testCompile 'junit:junit:4.11'
+}
+
+allprojects {
+    task 'createSrcDirs' << {
+        println "Creating all source sets"
+        project.sourceSets.each { sset ->
+            def sDirSet = sset.allSource
+            // srcDirs is a set of File objects
+            sDirSet.srcDirs.each { dir ->
+                if (!dir.mkdirs()) {
+                    println "** Failed to create: ${dir}"
+                }
+            }
+        }
+    }
+}
