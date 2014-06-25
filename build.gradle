@@ -31,17 +31,22 @@ subprojects {
         testCompile 'junit:junit:4.11'
     }
 
-    task 'createSrcDirs' << {
+    task 'createSourceDirectories' << {
         println "Creating all source sets"
-        project.sourceSets.each { sset ->
-            def sDirSet = sset.allSource
-            // srcDirs is a set of File objects
-            sDirSet.srcDirs.each { dir ->
-                if (!dir.mkdirs()) {
-                    println "** Failed to create: ${dir}"
+        project.sourceSets.each { sourceSet ->
+            def sourceDirectoriesSet = sourceSet.allSource
+            sourceDirectoriesSet.srcDirs.each { directory ->
+                if (!directory.mkdirs()) {
+                    println "** Failed to create: ${directory}"
+                } else {
+                    println "Created: ${directory}"
                 }
             }
         }
     }
+
+    createSourceDirectories.description = 'Creates project\'s source directories'
+
+
 
 }
