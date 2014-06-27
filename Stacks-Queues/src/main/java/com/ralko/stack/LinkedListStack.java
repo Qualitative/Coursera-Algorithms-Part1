@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 public class LinkedListStack<Item> implements Stack<Item> {
 
-    private Node first = null;
-    private int size = 0;
+    private Node first;
+    private int size;
 
     public void push(Item item) {
         Node oldFirst = first;
@@ -18,6 +18,8 @@ public class LinkedListStack<Item> implements Stack<Item> {
     }
 
     public Item pop() {
+        if (isEmpty())
+            throw new IllegalStateException("Couldn't pop from empty stack");
         Item valueToReturn = first.item;
         first = first.next;
         size--;

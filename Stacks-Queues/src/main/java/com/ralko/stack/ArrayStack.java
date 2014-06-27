@@ -19,7 +19,10 @@ public class ArrayStack<Item> implements Stack<Item> {
     }
 
     public Item pop() {
+        if (isEmpty())
+            throw new IllegalStateException("Couldn't pop from empty stack");
         Item item = items[--N];
+        items[N] = null;
         if (N > 0 && N == items.length / 4)
             resize(items.length / 2);
         return item;
@@ -40,7 +43,7 @@ public class ArrayStack<Item> implements Stack<Item> {
     @SuppressWarnings("unchecked")
     private void resize(int newSize) {
         Item[] copy = (Item[]) new Object[newSize];
-        for (int i = 0; i < items.length; i++) {
+        for (int i = 0; i < N; i++) {
             copy[i] = items[i];
         }
         items = copy;
