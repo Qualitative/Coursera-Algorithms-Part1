@@ -1,33 +1,40 @@
 package com.ralko.queue;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class LinkedListQueue<Item> implements Queue<Item> {
+public class LinkedListQueue<T> implements Queue<T> {
 
     private Node first;
     private Node last;
     private int size;
 
-    public void enqueue(Item item) {
+    public void enqueue(T item) {
         Node oldLast = last;
         last = new Node();
         last.item = item;
         last.next = null;
 
-        if (isEmpty())
+        if (isEmpty()) {
             first = last;
-        else
+        } else {
             oldLast.next = last;
+        }
         size++;
     }
 
-    public Item dequeue() {
-        if (isEmpty())
+    public T dequeue() {
+        if (isEmpty()) {
             throw new IllegalStateException("Couldn't dequeue from empty queue");
-        Item valueToReturn = first.item;
+        }
+
+        T valueToReturn = first.item;
         first = first.next;
-        if (isEmpty())
+
+        if (isEmpty()) {
             last = null;
+        }
+
         size--;
         return valueToReturn;
     }
@@ -40,16 +47,16 @@ public class LinkedListQueue<Item> implements Queue<Item> {
         return size;
     }
 
-    public Iterator<Item> iterator() {
+    public Iterator<T> iterator() {
         return new LinkedListQueueIterator();
     }
 
     private class Node {
         Node next;
-        Item item;
+        T item;
     }
 
-    private class LinkedListQueueIterator implements Iterator<Item> {
+    private class LinkedListQueueIterator implements Iterator<T> {
 
         private Node current = first;
 
@@ -57,8 +64,12 @@ public class LinkedListQueue<Item> implements Queue<Item> {
             return current != null;
         }
 
-        public Item next() {
-            Item item = current.item;
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("There is no next element");
+            }
+
+            T item = current.item;
             current = current.next;
             return item;
         }

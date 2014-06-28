@@ -1,9 +1,9 @@
 package com.ralko.stack;
 
-public interface Stack<Item> extends Iterable<Item> {
+public interface Stack<T> extends Iterable<T> {
     
-    void push(Item item);
-    Item pop();
+    void push(T item);
+    T pop();
     boolean isEmpty();
     int getSize();
     

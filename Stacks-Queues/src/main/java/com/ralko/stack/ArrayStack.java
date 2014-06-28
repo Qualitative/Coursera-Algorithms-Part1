@@ -1,70 +1,79 @@
 package com.ralko.stack;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class ArrayStack<Item> implements Stack<Item> {
+public class ArrayStack<T> implements Stack<T> {
 
-    private Item[] items;
-    private int N;
+    private T[] items;
+    private int n;
 
     @SuppressWarnings("unchecked")
     public ArrayStack() {
-        items = (Item[]) new Object[1];
+        items = (T[]) new Object[1];
     }
 
-    public void push(Item item) {
-        if (items.length == N)
+    public void push(T item) {
+        if (items.length == n) {
             resize(items.length * 2);
-        items[N++] = item;
+        }
+        items[n++] = item;
     }
 
-    public Item pop() {
-        if (isEmpty())
+    public T pop() {
+
+        if (isEmpty()) {
             throw new IllegalStateException("Couldn't pop from empty stack");
-        Item item = items[--N];
-        items[N] = null;
-        if (N > 0 && N == items.length / 4)
+        }
+
+        T item = items[--n];
+        items[n] = null;
+        if (n > 0 && n == items.length / 4) {
             resize(items.length / 2);
+        }
         return item;
     }
 
     public boolean isEmpty() {
-        return N == 0;
+        return n == 0;
     }
 
     public int getSize() {
-        return N;
+        return n;
     }
 
-    public Iterator<Item> iterator() {
+    public Iterator<T> iterator() {
         return new ArrayStackIterator();
     }
 
     @SuppressWarnings("unchecked")
     private void resize(int newSize) {
-        Item[] copy = (Item[]) new Object[newSize];
-        for (int i = 0; i < N; i++) {
+        T[] copy = (T[]) new Object[newSize];
+        for (int i = 0; i < n; i++) {
             copy[i] = items[i];
         }
         items = copy;
     }
-    
-    private class ArrayStackIterator implements Iterator<Item> {
-        
-        private int current = N;
+
+    private class ArrayStackIterator implements Iterator<T> {
+
+        private int current = n;
 
         public boolean hasNext() {
             return current > 0;
         }
 
-        public Item next() {
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("There is no next element");
+            }
             return items[--current];
         }
 
         public void remove() {
             throw new UnsupportedOperationException("Remove is unsupported operation");
         }
-        
+
     }
 
 }

@@ -1,17 +1,35 @@
+apply plugin: "sonar-runner"
+
+sonarRunner {
+    sonarProperties {
+        property "sonar.host.url", "http://localhost:8083/sonarqube/"
+        property "sonar.jdbc.url", "jdbc:postgresql://localhost:5432/Sonar"
+        property "sonar.jdbc.driverClassName", "org.postgresql.Driver"
+        property "sonar.jdbc.username", "sonar"
+        property "sonar.jdbc.password", "sonar"
+        property "sonar.jacoco.reportPath", "$buildDir/jacoco/jacocoTest.exec"
+    }
+}
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
+    apply plugin: 'jacoco'
 
     group = 'com.ralko'
+
+    test {
+        jacoco {
+            destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        }
+    }
 }
 
 subprojects {
     repositories {
         mavenCentral()
 
-        flatDir {
-            dirs '../libs'
-        }
+        flatDir { dirs '../libs' }
     }
 
     dependencies {
@@ -29,6 +47,8 @@ subprojects {
         compile name: 'stdlib'
 
         testCompile 'junit:junit:4.11'
+
+        runtime 'org.postgresql:postgresql:9.3-1100-jdbc4'
     }
 
     task 'createSourceDirectories' << {
@@ -46,7 +66,4 @@ subprojects {
     }
 
     createSourceDirectories.description = 'Creates project\'s source directories'
-
-
-
 }

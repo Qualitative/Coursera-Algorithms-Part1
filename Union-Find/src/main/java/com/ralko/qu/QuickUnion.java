@@ -24,7 +24,6 @@ public class QuickUnion {
         items[qroot] = proot;
     }
 
-
     public boolean find(int p, int q) {
         return root(p) == root(q);
     }
@@ -36,8 +35,11 @@ public class QuickUnion {
     }
 
     private int root(int i) {
-        while (i != items[i]) i = items[i];
-        return i;
+        int root = i;
+        while (root != items[root]) {
+            root = items[root];
+        }
+        return root;
     }
 
 }

@@ -21,10 +21,14 @@ public class QuickFind {
         int pid = items[p];
         int qid = items[q];
 
-        if (pid == qid) return;
+        if (pid == qid) {
+            return;
+        }
 
         for (int i = 0; i < items.length; i++) {
-            if (items[i] == pid) items[i] = qid;
+            if (items[i] == pid) {
+                items[i] = qid;
+            }
         }
 
     }

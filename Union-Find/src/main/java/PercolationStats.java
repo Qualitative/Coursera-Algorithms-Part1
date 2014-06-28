@@ -1,31 +1,34 @@
+
 public class PercolationStats {
 
-    private final int T;
-    private double [] fractions;
+    private final int t;
+    private double[] fractions;
 
-    public PercolationStats(int N, int T) {
+    public PercolationStats(int n, int t) {
 
-        if (N <= 0 || T <= 0)
+        if (n <= 0 || t <= 0) {
             throw new IllegalArgumentException("N and T values must be positive");
+        }
 
-        this.T = T;
-        this.fractions = new double[T];
+        this.t = t;
+        this.fractions = new double[t];
 
-        for (int i = 0; i < T; i++) {
+        for (int i = 0; i < t; i++) {
 
-            Percolation perc = new Percolation(N);
+            Percolation perc = new Percolation(n);
             int sitesCount = 0;
 
             while (!perc.percolates()) {
-                int row = StdRandom.uniform(1, N + 1);
-                int col = StdRandom.uniform(1, N + 1);
-                if (perc.isOpen(row, col))
+                int row = StdRandom.uniform(1, n + 1);
+                int col = StdRandom.uniform(1, n + 1);
+                if (perc.isOpen(row, col)) {
                     continue;
+                }
                 perc.open(row, col);
                 sitesCount++;
             }
 
-            fractions[i] = (double) sitesCount / (N * N);
+            fractions[i] = (double) sitesCount / (n * n);
         }
 
     }
@@ -35,23 +38,17 @@ public class PercolationStats {
     }
 
     public double stddev() {
-        if (T == 1)
+        if (t == 1) {
             return Double.NaN;
+        }
         return StdStats.stddev(fractions);
     }
 
     public double confidenceLo() {
-        return mean() - 1.96 * stddev() / Math.sqrt(T);
+        return mean() - 1.96 * stddev() / Math.sqrt(t);
     }
 
     public double confidenceHi() {
-        return mean() + 1.96 * stddev() / Math.sqrt(T);
-    }
-
-    public static void main(String[] args) {
-        PercolationStats percolationStats = new PercolationStats(200, 100);
-        System.out.println(percolationStats.mean());
-        System.out.println(percolationStats.stddev());
-        System.out.println(percolationStats.confidenceLo() + ", " + percolationStats.confidenceHi());
+        return mean() + 1.96 * stddev() / Math.sqrt(t);
     }
 }

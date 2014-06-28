@@ -1,8 +1,8 @@
 package com.ralko.queue;
 
-public interface Queue<Item> extends Iterable<Item> {
-    void enqueue(Item item);
-    Item dequeue();
+public interface Queue<T> extends Iterable<T> {
+    void enqueue(T item);
+    T dequeue();
     boolean isEmpty();
     int getSize();
 }

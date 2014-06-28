@@ -5,6 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,8 +41,8 @@ public abstract class AbstractStackTest {
     @Test
     public void shouldReturnMostRecentlyAddedObjectWhenPopIsInvoked() {
         // Given
-        String item1 = new String("Item1");
-        String item2 = new String("Item2");
+        String item1 = "Item1";
+        String item2 = "Item2";
 
         stack.push(item1);
         stack.push(item2);
@@ -65,8 +68,8 @@ public abstract class AbstractStackTest {
     @Test
     public void shouldBeIterableAndReturnValuesInReverseOrderTheyWereAdded() {
         // Given
-        String item1 = new String("Item1");
-        String item2 = new String("Item2");
+        String item1 = "Item1";
+        String item2 = "Item2";
 
         stack.push(item1);
         stack.push(item2);
@@ -93,18 +96,49 @@ public abstract class AbstractStackTest {
         // When
         stack.pop();
     }
-    
+
     @Test
     public void shouldPushAndPopManyItemsWithoutExceptions() {
         // Given
         int numberOfItems = 10000;
-        
+
         // When
         for(int i = 0; i< numberOfItems; i++) {
-            stack.push(new String("Item" + i));
+            stack.push("Item" + i);
         }
         for(int i = 0; i< numberOfItems; i++) {
             stack.pop();
         }
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void shouldThrowExceptionWhenRemoveOnIteratorIsInvoked() {
+        // Given
+        stack.push("item");
+        Iterator<String> iterator = stack.iterator();
+        // When
+        iterator.remove();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void shouldThrowExceptionWhenNoNextElement() {
+        // Given
+        Iterator<String> iterator = stack.iterator();
+        // When
+        iterator.next();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void shouldThrowExceptionWhenNoNextElementMultipleInvokation() {
+        // Given
+        String item = "item";
+        stack.push(item);
+        Iterator<String> iterator = stack.iterator();
+
+        // When
+        String actualItem = iterator.next();
+        assertSame(item, actualItem);
+
+        iterator.next();
     }
 }

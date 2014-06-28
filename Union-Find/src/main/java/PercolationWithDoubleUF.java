@@ -1,20 +1,21 @@
 public class PercolationWithDoubleUF {
 
-    private final int N;
+    private final int n;
     private final int size;
     private final int virtualTop;
-    private final int virtualBottom;;
+    private final int virtualBottom;
     private final boolean[][] opened;
     private final WeightedQuickUnionUF ufTop;
     private final WeightedQuickUnionUF ufBottom;
 
-    public PercolationWithDoubleUF(int N) {
+    public PercolationWithDoubleUF(int n) {
 
-        if (N <= 0)
+        if (n <= 0) {
             throw new IllegalArgumentException("N value must be positive");
+        }
 
-        this.N = N;
-        this.size = (N * N) + 2;
+        this.n = n;
+        this.size = (n * n) + 2;
 
         this.virtualTop = 0;
         this.virtualBottom = size - 1;
@@ -22,7 +23,7 @@ public class PercolationWithDoubleUF {
         this.ufTop = new WeightedQuickUnionUF(size);
         this.ufBottom = new WeightedQuickUnionUF(size);
 
-        this.opened = new boolean[N + 1][N + 1];
+        this.opened = new boolean[n + 1][n + 1];
     }
 
     public void open(int i, int j) {
@@ -34,7 +35,7 @@ public class PercolationWithDoubleUF {
                 ufTop.union(xyTo1D(i, j), xyTo1D(i - 1, j));
                 ufBottom.union(xyTo1D(i, j), xyTo1D(i - 1, j));
             }
-            if ((i + 1 <= N) && opened[i + 1][j]) {
+            if ((i + 1 <= n) && opened[i + 1][j]) {
                 ufTop.union(xyTo1D(i, j), xyTo1D(i + 1, j));
                 ufBottom.union(xyTo1D(i, j), xyTo1D(i + 1, j));
             }
@@ -42,7 +43,7 @@ public class PercolationWithDoubleUF {
                 ufTop.union(xyTo1D(i, j), xyTo1D(i, j - 1));
                 ufBottom.union(xyTo1D(i, j), xyTo1D(i, j - 1));
             }
-            if ((j + 1 <= N) && opened[i][j + 1]) {
+            if ((j + 1 <= n) && opened[i][j + 1]) {
                 ufTop.union(xyTo1D(i, j), xyTo1D(i, j + 1));
                 ufBottom.union(xyTo1D(i, j), xyTo1D(i, j + 1));
             }
@@ -50,8 +51,9 @@ public class PercolationWithDoubleUF {
                 ufTop.union(xyTo1D(i, j), virtualTop);
                 ufBottom.union(xyTo1D(i, j), virtualTop);
             }
-            if (i == N)
+            if (i == n) {
                 ufBottom.union(xyTo1D(i, j), virtualBottom);
+            }
         }
     }
 
@@ -75,12 +77,13 @@ public class PercolationWithDoubleUF {
     }
 
     private int xyTo1D(int i, int j) {
-        return (i - 1) * N + j;
+        return (i - 1) * n + j;
     }
 
     private void checkIndex(int index) {
-        if (index <= 0 || index > N)
+        if (index <= 0 || index > n) {
             throw new IndexOutOfBoundsException("Index is out of bounds: " + index);
+        }
     }
 
 }

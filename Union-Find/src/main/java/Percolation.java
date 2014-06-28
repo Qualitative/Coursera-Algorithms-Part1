@@ -1,25 +1,26 @@
 public class Percolation {
 
-    private final int N;
+    private final int n;
     private final int size;
     private final int virtualTop;
     private final boolean[][] opened;
     private final WeightedQuickUnionUF uf;
     private final boolean[] containsBottomSite;
 
-    public Percolation(int N) {
+    public Percolation(int n) {
 
-        if (N <= 0)
+        if (n <= 0) {
             throw new IllegalArgumentException("N value must be positive");
+        }
 
-        this.N = N;
-        this.size = (N * N) + 1;
+        this.n = n;
+        this.size = (n * n) + 1;
 
         this.virtualTop = 0;
 
         this.uf = new WeightedQuickUnionUF(size);
 
-        this.opened = new boolean[N + 1][N + 1];
+        this.opened = new boolean[n + 1][n + 1];
         this.containsBottomSite = new boolean[size];
     }
 
@@ -39,7 +40,7 @@ public class Percolation {
                     containsBottomSite[second] = true;
                 }
             }
-            if ((i + 1 <= N) && opened[i + 1][j]) {
+            if ((i + 1 <= n) && opened[i + 1][j]) {
                 uf.union(xyTo1D(i, j), xyTo1D(i + 1, j));
                 int second = uf.find(xyTo1D(i + 1, j));
                 if (containsBottomSite[first] || containsBottomSite[second]) {
@@ -55,7 +56,7 @@ public class Percolation {
                     containsBottomSite[second] = true;
                 }
             }
-            if ((j + 1 <= N) && opened[i][j + 1]) {
+            if ((j + 1 <= n) && opened[i][j + 1]) {
                 uf.union(xyTo1D(i, j), xyTo1D(i, j + 1));
                 int second = uf.find(xyTo1D(i, j + 1));
                 if (containsBottomSite[first] || containsBottomSite[second]) {
@@ -67,8 +68,8 @@ public class Percolation {
                 uf.union(xyTo1D(i, j), virtualTop);
             }
 
-            if (i == N) {
-                containsBottomSite[uf.find(xyTo1D(N, j))] = true;
+            if (i == n) {
+                containsBottomSite[uf.find(xyTo1D(n, j))] = true;
             }
         }
     }
@@ -93,12 +94,13 @@ public class Percolation {
     }
 
     private int xyTo1D(int i, int j) {
-        return (i - 1) * N + j;
+        return (i - 1) * n + j;
     }
 
     private void checkIndex(int index) {
-        if (index <= 0 || index > N)
+        if (index <= 0 || index > n) {
             throw new IndexOutOfBoundsException("Index is out of bounds: " + index);
+        }
     }
 
 }

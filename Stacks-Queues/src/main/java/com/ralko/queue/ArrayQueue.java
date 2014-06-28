@@ -1,36 +1,45 @@
 package com.ralko.queue;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class ArrayQueue<Item> implements Queue<Item> {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    private Item[] items;
+public class ArrayQueue<T> implements Queue<T> {
+
+    private T[] items;
     private int head;
     private int tail;
 
+    private static final Logger LOG = LoggerFactory.getLogger(ArrayQueue.class);
+
     @SuppressWarnings("unchecked")
     public ArrayQueue() {
-        items = (Item[]) new Object[1];
+        items = (T[]) new Object[1];
     }
 
     //FIXME: fix resizing and moving to zero index logic
-    public void enqueue(Item item) {
+    public void enqueue(T item) {
         if ((tail == items.length) && (tail - head) <= tail / 2) {
             moveToZeroIndex();
             resize(items.length * 2);
-        } else if ((tail == items.length)) {
+        } else if (tail == items.length) {
             resize(items.length * 2);
         }
         items[tail++] = item;
-        System.out.println("Enqueue:" + items.length);
-        System.out.println("" + head + ":" + tail);
+        LOG.debug("Enqueue: {}", items.length);
+        LOG.debug("Head: {}, Tail: {}", head, tail);
     }
 
     //FIXME: fix resizing and moving to zero index logic
-    public Item dequeue() {
-        if (isEmpty())
+    public T dequeue() {
+
+        if (isEmpty()) {
             throw new IllegalStateException("Couldn't dequeue from empty queue");
-        Item item = items[head];
+        }
+
+        T item = items[head];
         items[head++] = null;
         if ((getSize() > 0) && (getSize() < tail / 2)) {
             moveToZeroIndex();
@@ -38,8 +47,8 @@ public class ArrayQueue<Item> implements Queue<Item> {
         if ((getSize() > 0) && (tail == items.length / 4)) {
             resize(items.length / 2);
         }
-        System.out.println("Dequeue:" + items.length);
-        System.out.println("" + head + ":" + tail);
+        LOG.debug("Dequeue: {}", items.length);
+        LOG.debug("Head: {}, Tail: {}", head, tail);
         return item;
     }
 
@@ -51,13 +60,13 @@ public class ArrayQueue<Item> implements Queue<Item> {
         return tail - head;
     }
 
-    public Iterator<Item> iterator() {
+    public Iterator<T> iterator() {
         return new ArrayQueueIterator();
     }
 
     @SuppressWarnings("unchecked")
     private void resize(int newSize) {
-        Item[] copy = (Item[]) new Object[newSize];
+        T[] copy = (T[]) new Object[newSize];
         for (int i = 0; i < items.length; i++) {
             copy[i] = items[i];
         }
@@ -66,7 +75,7 @@ public class ArrayQueue<Item> implements Queue<Item> {
 
     @SuppressWarnings("unchecked")
     private void moveToZeroIndex() {
-        Item[] copy = (Item[]) new Object[items.length];
+        T[] copy = (T[]) new Object[items.length];
         for (int i = head, j = 0; i < tail; i++, j++) {
             copy[j] = items[i];
         }
@@ -75,7 +84,7 @@ public class ArrayQueue<Item> implements Queue<Item> {
         head = 0;
     }
 
-    private class ArrayQueueIterator implements Iterator<Item> {
+    private class ArrayQueueIterator implements Iterator<T> {
 
         private int current = head;
 
@@ -83,7 +92,10 @@ public class ArrayQueue<Item> implements Queue<Item> {
             return current != tail;
         }
 
-        public Item next() {
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("There is no next element");
+            }
             return items[current++];
         }
 

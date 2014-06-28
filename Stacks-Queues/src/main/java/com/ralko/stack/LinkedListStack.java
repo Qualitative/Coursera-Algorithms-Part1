@@ -1,26 +1,30 @@
 package com.ralko.stack;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class LinkedListStack<Item> implements Stack<Item> {
+public class LinkedListStack<T> implements Stack<T> {
 
     private Node first;
     private int size;
 
-    public void push(Item item) {
+    public void push(T item) {
         Node oldFirst = first;
-        
+
         first = new Node();
         first.next = oldFirst;
         first.item = item;
-        
+
         size++;
     }
 
-    public Item pop() {
-        if (isEmpty())
+    public T pop() {
+
+        if (isEmpty()) {
             throw new IllegalStateException("Couldn't pop from empty stack");
-        Item valueToReturn = first.item;
+        }
+
+        T valueToReturn = first.item;
         first = first.next;
         size--;
         return valueToReturn;
@@ -34,25 +38,28 @@ public class LinkedListStack<Item> implements Stack<Item> {
         return size;
     }
 
-    public Iterator<Item> iterator() {
+    public Iterator<T> iterator() {
         return new LinkedListStackIterator();
     }
 
     private class Node {
         Node next;
-        Item item;;
+        T item;
     }
-    
-    private class LinkedListStackIterator implements Iterator<Item> {
-        
+
+    private class LinkedListStackIterator implements Iterator<T> {
+
         private Node current = first;
 
         public boolean hasNext() {
             return current != null;
         }
 
-        public Item next() {
-            Item item = current.item;
+        public T next() {
+            if(!hasNext()) {
+                throw new NoSuchElementException("There is no next element");
+            }
+            T item = current.item;
             current = current.next;
             return item;
         }
@@ -60,7 +67,7 @@ public class LinkedListStack<Item> implements Stack<Item> {
         public void remove() {
             throw new UnsupportedOperationException("Remove is unsupported operation");
         }
-        
+
     }
 
 }
