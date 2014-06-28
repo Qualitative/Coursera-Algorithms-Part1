@@ -19,20 +19,15 @@ public class ArrayQueue<T> implements Queue<T> {
         items = (T[]) new Object[1];
     }
 
-    //FIXME: fix resizing and moving to zero index logic
     public void enqueue(T item) {
-        if ((tail == items.length) && (tail - head) <= tail / 2) {
+        if ((tail == items.length) && (getSize() <= tail / 2)) {
             moveToZeroIndex();
-            resize(items.length * 2);
-        } else if (tail == items.length) {
+        } else if ((tail == items.length) && (getSize() > tail / 2)) {
             resize(items.length * 2);
         }
         items[tail++] = item;
-        LOG.debug("Enqueue: {}", items.length);
-        LOG.debug("Head: {}, Tail: {}", head, tail);
     }
 
-    //FIXME: fix resizing and moving to zero index logic
     public T dequeue() {
 
         if (isEmpty()) {
@@ -41,14 +36,13 @@ public class ArrayQueue<T> implements Queue<T> {
 
         T item = items[head];
         items[head++] = null;
-        if ((getSize() > 0) && (getSize() < tail / 2)) {
+        if ((getSize() > 0) && (getSize() <= tail / 2)) {
             moveToZeroIndex();
         }
-        if ((getSize() > 0) && (tail == items.length / 4)) {
+
+        if ((getSize() > 0) && (head == 0) && (tail <= items.length / 4)) {
             resize(items.length / 2);
         }
-        LOG.debug("Dequeue: {}", items.length);
-        LOG.debug("Head: {}, Tail: {}", head, tail);
         return item;
     }
 
@@ -66,8 +60,11 @@ public class ArrayQueue<T> implements Queue<T> {
 
     @SuppressWarnings("unchecked")
     private void resize(int newSize) {
+        LOG.debug("Resized to newSize={} from oldSize={}", newSize, items.length);
+        LOG.debug("Head: {}, Tail: {}", head, tail);
+
         T[] copy = (T[]) new Object[newSize];
-        for (int i = 0; i < items.length; i++) {
+        for (int i = 0; i < getSize(); i++) {
             copy[i] = items[i];
         }
         items = copy;
@@ -75,6 +72,9 @@ public class ArrayQueue<T> implements Queue<T> {
 
     @SuppressWarnings("unchecked")
     private void moveToZeroIndex() {
+        LOG.debug("Moved to zero index {} items. Array length is {}", getSize(), items.length);
+        LOG.debug("Head: {}, Tail: {}", head, tail);
+
         T[] copy = (T[]) new Object[items.length];
         for (int i = head, j = 0; i < tail; i++, j++) {
             copy[j] = items[i];
