@@ -1,1 +1,1 @@
-include 'Union-Find', 'Stacks-Queues'
+include 'Union-Find', 'Stacks-Queues', 'ElementarySorts'
