@@ -20,7 +20,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(StdRandom.class)
 public class RandomizedQueueTest {
@@ -120,6 +119,43 @@ public class RandomizedQueueTest {
             queue.enqueue("Item" + i);
         }
         for (int i = 0; i < 80; i++) {
+            queue.dequeue();
+        }
+    }
+
+    @Test
+    public void shouldEnqueueAndDequeueManyItemsWithoutExceptionsSecondCase() {
+        // When
+        queue.enqueue("!");
+        queue.dequeue();
+        for (int i = 0; i < 60; i++) {
+            queue.enqueue("Item" + i);
+        }
+        for (int i = 0; i < 60; i++) {
+            queue.dequeue();
+        }
+        for (int i = 0; i < 140; i++) {
+            queue.enqueue("Item" + i);
+        }
+        for (int i = 0; i < 140; i++) {
+            queue.dequeue();
+        }
+        for (int i = 0; i < 320; i++) {
+            queue.enqueue("Item" + i);
+        }
+        for (int i = 0; i < 320; i++) {
+            queue.dequeue();
+        }
+        for (int i = 0; i < 500; i++) {
+            queue.enqueue("Item" + i);
+        }
+        for (int i = 0; i < 500; i++) {
+            queue.dequeue();
+        }
+        for (int i = 0; i < 1000; i++) {
+            queue.enqueue("Item" + i);
+        }
+        for (int i = 0; i < 1000; i++) {
             queue.dequeue();
         }
     }

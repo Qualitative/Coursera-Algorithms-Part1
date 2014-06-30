@@ -7,6 +7,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private Item[] items;
     private int emptySells;
     private int size;
+    private boolean isCompressed;
 
     public RandomizedQueue() {
         items = (Item[]) new Object[1];
@@ -22,9 +23,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public void enqueue(Item item) {
         checkItem(item);
+
         if ((tail == items.length) && (size() > tail / 2)) {
             resize(items.length * 2);
         }
+
+        if ((tail == items.length) && (size() == 0)) {
+            tail--;
+        }
+
         size++;
         items[tail++] = item;
     }
@@ -40,6 +47,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             item = items[index];
         } while (item == null);
 
+        StdRandom.setSeed(System.nanoTime());
         items[index] = null;
 
         size--;
@@ -48,13 +56,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if ((size() > 0) && (size() <= emptySells)) {
             compressArray();
         }
-
         return item;
     }
 
     public Item sample() {
         checkNotEmpty();
-        if ((size() > 0) && (size() <= emptySells)) {
+
+        if ((size() > 0) && (size() <= emptySells) && !isCompressed) {
             compressArray();
         }
 
@@ -91,6 +99,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             copy[i] = items[i];
         }
         items = copy;
+        isCompressed = false;
     }
 
     private void compressArray() {
@@ -105,27 +114,36 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         emptySells = 0;
         items = copy;
         tail = size;
+        isCompressed = true;
     }
 
     private class RandomizedQueueIterator implements Iterator<Item> {
 
         private int current = 0;
+        private Item[] copyOfItems;
 
         public RandomizedQueueIterator() {
-            compressArray();
-            StdRandom.setSeed(System.currentTimeMillis());
-            StdRandom.shuffle(items);
+            current = 0;
+            if (!isCompressed) {
+                compressArray();
+            }
+            copyOfItems = (Item[]) new Object[items.length];
+            for (int i = 0; i < items.length; i++) {
+                copyOfItems[i] = items[i];
+            }
+            StdRandom.setSeed(System.nanoTime());
+            StdRandom.shuffle(copyOfItems);
         }
 
         public boolean hasNext() {
-            return current != tail;
+            return current < size;
         }
 
         public Item next() {
             if (!hasNext()) {
                 throw new NoSuchElementException("There is no next element");
             }
-            return items[current++];
+            return copyOfItems[current++];
         }
 
         public void remove() {
