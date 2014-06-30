@@ -34,6 +34,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         size++;
         items[tail++] = item;
+        StdRandom.setSeed(System.nanoTime());
     }
 
     public Item dequeue() {
@@ -47,7 +48,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             item = items[index];
         } while (item == null);
 
-        StdRandom.setSeed(System.nanoTime());
         items[index] = null;
 
         size--;
