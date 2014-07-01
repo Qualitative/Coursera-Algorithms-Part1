@@ -87,11 +87,13 @@ public class ArrayQueue<T> implements Queue<T> {
     private class ArrayQueueIterator implements Iterator<T> {
 
         private int current = head;
-
+        
+        @Override
         public boolean hasNext() {
             return current != tail;
         }
 
+        @Override
         public T next() {
             if (!hasNext()) {
                 throw new NoSuchElementException("There is no next element");
@@ -99,6 +101,7 @@ public class ArrayQueue<T> implements Queue<T> {
             return items[current++];
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Remove is unsupported operation");
         }

@@ -60,10 +60,12 @@ public class LinkedListQueue<T> implements Queue<T> {
 
         private Node current = first;
 
+        @Override
         public boolean hasNext() {
             return current != null;
         }
 
+        @Override
         public T next() {
             if (!hasNext()) {
                 throw new NoSuchElementException("There is no next element");
@@ -74,6 +76,7 @@ public class LinkedListQueue<T> implements Queue<T> {
             return item;
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Remove is unsupported operation");
         }
