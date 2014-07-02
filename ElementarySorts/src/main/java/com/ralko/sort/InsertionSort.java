@@ -5,9 +5,9 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SelectionSort<T extends Comparable<T>> implements ArraySort<T> {
+public class InsertionSort<T extends Comparable<T>> implements ArraySort<T> {
 
-    private final static Logger LOG = LoggerFactory.getLogger(SelectionSort.class);
+    private final static Logger LOG = LoggerFactory.getLogger(InsertionSort.class);
 
     @Override
     public void sort(T[] array) {
@@ -20,15 +20,14 @@ public class SelectionSort<T extends Comparable<T>> implements ArraySort<T> {
         LOG.debug("Before sorting: {}", Arrays.toString(array));
         LOG.debug("--------------------------------------");
 
-        for (int i = 0; i < n; i++) {
-            int min = i;
-
-            for (int j = i + 1; j < n; j++) {
-                if (less(array[j], array[min])) {
-                    min = j;
+        for (int i = 1; i < n; i++) {
+            for (int j = i; j > 0; j--) {
+                if (less(array[j], array[j - 1])) {
+                    exchange(array, j, j - 1);
+                } else {
+                    break;
                 }
             }
-            exchange(array, i, min);
         }
 
         LOG.debug("--------------------------------------");
@@ -40,10 +39,10 @@ public class SelectionSort<T extends Comparable<T>> implements ArraySort<T> {
     }
 
     private void exchange(T[] array, int i, int j) {
-        T temp = array[j];
-        array[j] = array[i];
-        array[i] = temp;
-        LOG.debug("Exchanged {} with {}", temp, array[j]);
+        T temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+        LOG.debug("Exchanged {} with {}", temp, array[i]);
         LOG.debug(Arrays.toString(array));
     }
 
