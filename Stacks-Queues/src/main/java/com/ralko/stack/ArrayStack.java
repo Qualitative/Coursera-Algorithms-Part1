@@ -59,10 +59,12 @@ public class ArrayStack<T> implements Stack<T> {
 
         private int current = n;
 
+        @Override
         public boolean hasNext() {
             return current > 0;
         }
 
+        @Override
         public T next() {
             if (!hasNext()) {
                 throw new NoSuchElementException("There is no next element");
@@ -70,6 +72,7 @@ public class ArrayStack<T> implements Stack<T> {
             return items[--current];
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Remove is unsupported operation");
         }

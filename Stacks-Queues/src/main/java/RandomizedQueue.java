@@ -133,11 +133,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             StdRandom.setSeed(System.nanoTime());
             StdRandom.shuffle(copyOfItems);
         }
-
+        
+        @Override
         public boolean hasNext() {
             return current < size;
         }
 
+        @Override
         public Item next() {
             if (!hasNext()) {
                 throw new NoSuchElementException("There is no next element");
@@ -145,6 +147,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             return copyOfItems[current++];
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Remove is unsupported operation");
         }
