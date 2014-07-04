@@ -48,6 +48,7 @@ subprojects {
 
         compile name: 'algs4'
         compile name: 'stdlib'
+        compile name: 'stdlib-package'
 
         testCompile 'junit:junit:4.11'
         testCompile 'org.mockito:mockito-all:1.9.5'

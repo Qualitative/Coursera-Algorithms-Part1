@@ -17,8 +17,10 @@ public class InsertionSort<T extends Comparable<T>> implements ArraySort<T> {
 
         int n = array.length;
 
-        LOG.debug("Before sorting: {}", Arrays.toString(array));
-        LOG.debug("--------------------------------------");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Before sorting: {}", Arrays.toString(array));
+            LOG.debug("--------------------------------------");
+        }
 
         for (int i = 1; i < n; i++) {
             for (int j = i; j > 0; j--) {
@@ -30,8 +32,10 @@ public class InsertionSort<T extends Comparable<T>> implements ArraySort<T> {
             }
         }
 
-        LOG.debug("--------------------------------------");
-        LOG.debug("After sorting: {}", Arrays.toString(array));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("--------------------------------------");
+            LOG.debug("After sorting: {}", Arrays.toString(array));
+        }
     }
 
     private boolean less(T item1, T item2) {
@@ -42,8 +46,10 @@ public class InsertionSort<T extends Comparable<T>> implements ArraySort<T> {
         T temp = array[i];
         array[i] = array[j];
         array[j] = temp;
-        LOG.debug("Exchanged {} with {}", temp, array[i]);
-        LOG.debug(Arrays.toString(array));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Exchanged {} with {}", temp, array[i]);
+            LOG.debug(Arrays.toString(array));
+        }
     }
 
 }

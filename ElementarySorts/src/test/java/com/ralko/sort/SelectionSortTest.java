@@ -6,4 +6,5 @@ public class SelectionSortTest extends AbstractArraySortTest {
     protected ArraySort<Integer> createArraySort() {
         return new SelectionSort<Integer>();
     }
+    
 }

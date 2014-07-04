@@ -5,9 +5,9 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SelectionSort<T extends Comparable<T>> implements ArraySort<T> {
+public class ShellSort<T extends Comparable<T>> implements ArraySort<T> {
 
-    private final static Logger LOG = LoggerFactory.getLogger(SelectionSort.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ShellSort.class);
 
     @Override
     public void sort(T[] array) {
@@ -22,15 +22,24 @@ public class SelectionSort<T extends Comparable<T>> implements ArraySort<T> {
             LOG.debug("--------------------------------------");
         }
 
-        for (int i = 0; i < n; i++) {
-            int min = i;
+        int h = 1;
+        while (h < n / 3) {
+            h = h * 3 + 1;
+        }
 
-            for (int j = i + 1; j < n; j++) {
-                if (less(array[j], array[min])) {
-                    min = j;
+        while (h >= 1) {
+            LOG.debug("H is {}", h);
+            for (int i = h; i < n; i++) {
+                for (int j = i; j >= h; j = j - h) {
+                    if (less(array[j], array[j - h])) {
+                        exchange(array, j, j - h);
+                    } else {
+                        break;
+                    }
                 }
             }
-            exchange(array, i, min);
+
+            h = h / 3;
         }
 
         if (LOG.isDebugEnabled()) {
