@@ -1,5 +1,9 @@
 public class Subset {
 
+    // Prevents instantiation
+    private Subset() {
+    }
+
     public static void main(String[] args) {
         RandomizedQueue<String> queue = new RandomizedQueue<String>();
         int k = Integer.parseInt(args[0]);
